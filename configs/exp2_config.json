@@ -1,5 +1,5 @@
 {
-    "name": "experiment_01",
+    "name": "experiment_02",
     "data": {
         "metadata_file": "/home/oscar/Documents/Datasets/Animals/metadata_70train.csv",
         "root_dir": "/home/oscar/Documents/Datasets/Animals/Animal_Faces"
@@ -13,16 +13,16 @@
         "model_name": "resnet34"
     },
     "train": {
-        "batch_size": 48,
+        "batch_size": 64,
         "num_epochs": 150,
         "num_workers": 4,
-        "lr": 0.0001,
+        "lr": 0.01,
         "momentum": 0.9,
         "weight_decay": 0.0001,
         "seed": 42,
         "early_stopping": {
             "patience": 10,
-            "min_delta": 0.001
+            "min_delta": 0.0001
         }
     },
     "classes": "configs/classes.json",

@@ -187,8 +187,26 @@ def do_split():
     config, _ = read_config(args)
     split_dataset(config)
 
+
+def check_parameters(model):
+    """
+    Prints the total number of parameters, trainable parameters, and frozen parameters in the model.
+
+    Args:
+        model (torch.nn.Module): The PyTorch model to analyze.
+    """
+    total_params = sum(p.numel() for p in model.parameters())
+    trainable_params = sum(p.numel() for p in model.parameters() if p.requires_grad)
+    frozen_params = total_params - trainable_params  # Non-trainable parameters
+
+    print("INFO: Model Parameters Summary:")
+    print(f"   Total parameters: {total_params:,}")
+    print(f"   Trainable parameters: {trainable_params:,}")
+    print(f"   Frozen parameters: {frozen_params:,}")
+
 if __name__ == "__main__":
     # do_split()
+    check_devices()
     print("Done.")
     # copy_data(source_path = "/Users/oscar/Documents/Documents-Local/DeepLearning/Datasets/afhq", dest_folder = "/Users/oscar/Documents/Documents-Local/DeepLearning/Datasets/Animals_Face")
     # create_metadata("/Users/oscar/Documents/Documents-Local/DeepLearning/Datasets/Animal_Faces")

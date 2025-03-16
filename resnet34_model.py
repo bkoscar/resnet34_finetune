@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 import torchvision.models as models
-
+import utils
 
 def get_model(num_classes=3, pretrained=True, freeze=True):
     """
@@ -49,6 +49,7 @@ class ResNet34FineTuner(nn.Module):
 
 def checktest():
     model = get_model()
+    utils.check_parameters(model)
     batch_size = 10
     dummy_input = torch.randn(batch_size, 3, 224, 224)  # [B,CH,W,H]
     logits = model(dummy_input)
