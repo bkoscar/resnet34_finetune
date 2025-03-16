@@ -1,4 +1,5 @@
 import os
+import argparse
 import json
 import shutil
 import pandas as pd
@@ -7,6 +8,7 @@ import matplotlib.pyplot as plt
 from torchvision.io import read_image
 import torchvision.transforms.functional as F
 from torchvision import transforms
+from sklearn.model_selection import train_test_split
 
 
 def check_devices():
@@ -120,7 +122,7 @@ def read_img(img_path, normalize=False, show=False, transform=False):
 
     if transform:
         transform = transforms.Compose(
-            [transforms.Resize((256, 256)), transforms.RandomHorizontalFlip(p=0.5)]
+            [transforms.Resize((224, 224)), transforms.RandomHorizontalFlip(p=0.5)]
         )
         image = transform(image)
 
@@ -152,8 +154,41 @@ def show_img(img, title=None, unnormalize=False):
     plt.axis("off")
     plt.show()
 
+def split_dataset(config):
+    metadata = read_metadata(config["data"]["metadata_file"])
+    X = metadata.iloc[:, 0] 
+    y = metadata.iloc[:, 1]  
+    X_train, X_temp, y_train, y_temp = train_test_split(
+        X, y, test_size=config['split_features']['train_split'], random_state=42, stratify=y
+    )
+    X_val, X_test, y_val, y_test = train_test_split(
+        X_temp, y_temp, test_size=config['split_features']['test_split'], random_state=42, stratify=y_temp
+    )
+    metadata["split"] = "unknown"
+    metadata.loc[X_train.index, "split"] = "train"
+    metadata.loc[X_val.index, "split"] = "val"
+    metadata.loc[X_test.index, "split"] = "test"
+    total = len(metadata)
+    train_count = len(X_train)
+    val_count = len(X_val)
+    test_count = len(X_test)
+    train_pct = (train_count / total) * 100
+    val_pct = (val_count / total) * 100
+    test_pct = (test_count / total) * 100
+    print(f"Total de datos: {total}")
+    print(f"Train: {train_count} ({train_pct}%)")
+    print(f"Validation: {val_count} ({val_pct:.2f}%)")
+    print(f"Test: {test_count} ({test_pct:.2f}%)")
+    metadata.to_csv(f"/Users/oscar/Documents/Documents-Local/DeepLearning/Datasets/metadata_{int(train_pct)}.csv", index=False)
+
+
+def do_split():
+    args = argparse.Namespace(config="configs/exp01_config.json")
+    config, _ = read_config(args)
+    split_dataset(config)
 
 if __name__ == "__main__":
-    pass
+    # do_split()
+    print("Done.")
     # copy_data(source_path = "/Users/oscar/Documents/Documents-Local/DeepLearning/Datasets/afhq", dest_folder = "/Users/oscar/Documents/Documents-Local/DeepLearning/Datasets/Animals_Face")
     # create_metadata("/Users/oscar/Documents/Documents-Local/DeepLearning/Datasets/Animal_Faces")

@@ -1,8 +1,12 @@
 {
     "name": "experiment_01",
     "data": {
-        "metadata_file": "/Users/oscar/Documents/Documents-Local/DeepLearning/Datasets/metadata.csv",
+        "metadata_file": "/Users/oscar/Documents/Documents-Local/DeepLearning/Datasets/metadata_70train.csv",
         "root_dir": "/Users/oscar/Documents/Documents-Local/DeepLearning/Datasets/Animal_Faces"
     },
-    "classes": "configs/classes.json"
+    "classes": "configs/classes.json",
+    "split_features":{
+        "train_split":0.3,
+        "test_split": 0.1 
+    }
 }
