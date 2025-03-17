@@ -159,4 +159,5 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 experiment_01/
-experiment_02/
+experiment_02/checkpoints
+experiment_02/logs

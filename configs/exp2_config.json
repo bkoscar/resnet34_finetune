@@ -13,16 +13,16 @@
         "model_name": "resnet34"
     },
     "train": {
-        "batch_size": 64,
-        "num_epochs": 150,
-        "num_workers": 4,
-        "lr": 0.01,
+        "batch_size": 128,
+        "num_epochs": 500,
+        "num_workers": 8,
+        "lr": 0.0001,
         "momentum": 0.9,
         "weight_decay": 0.0001,
         "seed": 42,
         "early_stopping": {
             "patience": 10,
-            "min_delta": 0.0001
+            "min_delta": 0.00001
         }
     },
     "classes": "configs/classes.json",
